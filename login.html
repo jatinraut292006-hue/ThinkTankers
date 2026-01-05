@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAANI | Login</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      font-family: 'Poppins', sans-serif;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950">
+<script>
+  if (!localStorage.getItem("daani_user")) {
+    window.location.href = "./login.html";
+  }
+</script>
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
+    <h1 class="text-3xl font-bold text-center text-emerald-600">DAANI</h1>
+    <p class="text-center text-slate-500 mt-2 text-sm">
+      Donate with purpose
+    </p>
+
+    <div class="mt-8 space-y-4">
+      <input
+        id="userName"
+        type="text"
+        placeholder="Your Name"
+        class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+      />
+
+      <input
+        id="userEmail"
+        type="email"
+        placeholder="Email Address"
+        class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+      />
+	<div class="flex gap-4">
+    <button
+      id="donorBtn"
+      onclick="selectRole('donor')"
+      class="flex-1 py-2 rounded-xl border border-emerald-500 text-emerald-600 font-semibold">
+      Donor
+    </button>
+
+    <button
+      id="orgBtn"
+      onclick="selectRole('organization')"
+      class="flex-1 py-2 rounded-xl border border-slate-300 text-slate-600 font-semibold">
+      Organisation
+    </button>
+  </div>
+      <button
+        onclick="loginUser()"
+        class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-semibold transition-colors"
+      >
+        Continue
+      </button>
+
+      <p class="text-xs text-center text-slate-400 mt-3">
+        Demo login · Firebase-ready
+      </p>
+    </div>
+  </div>
+
+  <script>
+  let selectedRole = null;
+
+  function selectRole(role) {
+    selectedRole = role;
+
+    donorBtn.classList.remove("bg-emerald-500", "text-white");
+    orgBtn.classList.remove("bg-emerald-500", "text-white");
+
+    if (role === "donor") {
+      donorBtn.classList.add("bg-emerald-500", "text-white");
+    } else {
+      orgBtn.classList.add("bg-emerald-500", "text-white");
+    }
+  }
+
+  function loginUser() {
+    const name = document.getElementById("userName").value.trim();
+    const email = document.getElementById("userEmail").value.trim();
+
+    if (!name || !email) return alert("Enter name and email");
+    if (!selectedRole) return alert("Select Donor or Organisation");
+
+    localStorage.setItem(
+      "daani_user",
+      JSON.stringify({ name, email, role: selectedRole })
+    );
+
+    // ✅ Donor goes to main site
+    if (selectedRole === "donor") {
+      window.location.href = "./daani.html";
+    }
+if (selectedRole === "organization") {
+  window.location.href = "./org.html";
+}
+
+  }
+</script>
+
+
+</body>
+</html>
+

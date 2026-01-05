@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DAANI | Donate With Purpose</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet (OpenStreetMap – FREE) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  html, body {
+    font-family: 'Poppins', sans-serif;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE / Edge */
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;              /* Chrome, Safari */
+  }
+</style>
+
+
+    
+</head>
+<body class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-50 text-slate-900">
+<script>
+  const user = localStorage.getItem('daani_user');
+  if (!user) {
+    window.location.href = "login.html";
+  }
+</script>
+
+<!-- NAVBAR -->
+<header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur shadow-sm">
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-3">
+        <h1 class="text-2xl font-bold text-emerald-600">DAANI</h1>
+        <nav class="flex items-center space-x-6 text-sm font-medium text-slate-700">
+            <a href="#donate" class="hover:text-emerald-600 transition-colors">Donate</a>
+            <a href="#centers" class="hover:text-emerald-600 transition-colors">Centers</a>
+            <a href="#track" class="hover:text-emerald-600 transition-colors">Impact</a>
+            <a href="#profile" class="hover:text-emerald-600 transition-colors">My Profile</a>
+            <span id="navUser" class="ml-4 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs"></span>
+        </nav>
+    </div>
+</header>
+
+
+
+<main class="pt-16">
+
+    <!-- HERO -->
+    <section id="hero"
+             class="relative flex items-center justify-center px-4 md:px-6 py-16 md:py-20 min-h-[320px] overflow-hidden">
+        <div class="absolute inset-0">
+            <img
+                    src="https://images.pexels.com/photos/8078361/pexels-photo-8078361.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                    alt="Man sitting on the street beside a dog"
+                    class="w-full h-full object-cover object-bottom"
+            />
+            <div class="absolute inset-0 bg-black/55"></div>
+        </div>
+
+        <div class="relative z-10 max-w-2xl mx-auto text-center text-white">
+            <h2 class="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight">
+                Give Things.<br />
+                <span class="text-emerald-300">Create Real Change.</span>
+            </h2>
+            <p class="mt-4 text-sm md:text-base text-slate-100/90">
+                A transparent donation platform with real pickup logistics.
+            </p>
+            <a
+                    href="#donate"
+                    class="inline-block mt-8 px-8 md:px-10 py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-900 rounded-full font-semibold text-sm md:text-base transition-colors"
+            >
+                Start Donating
+            </a>
+            <p class="mt-3 text-xs md:text-sm text-emerald-100/90">
+                Trusted by volunteers in Nagpur, Mumbai, Delhi &amp; Pune.
+            </p>
+        </div>
+    </section>
+
+    <!-- STATS + HOW IT WORKS CARD -->
+    <section class="bg-slate-50">
+        <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+            <div class="px-6 py-5 text-center">
+                <p class="text-3xl font-extrabold text-slate-900">1,250+</p>
+                <p class="mt-1 text-sm font-medium tracking-wide text-slate-500 uppercase">
+                    Active donors
+                </p>
+            </div>
+            <div class="px-6 py-5 text-center">
+                <p class="text-3xl font-extrabold text-slate-900">8,400</p>
+                <p class="mt-1 text-sm font-medium tracking-wide text-slate-500 uppercase">
+                    Items reused
+                </p>
+            </div>
+            <div class="px-6 py-5 text-center">
+                <p class="text-3xl font-extrabold text-slate-900">4</p>
+                <p class="mt-1 text-sm font-medium tracking-wide text-slate-500 uppercase">
+                    Cities covered
+                </p>
+            </div>
+        </div>
+
+
+        <!-- how it works -->
+                <div class="px-6 md:px-8 py-6 bg-slate-50">
+                    <div class="grid gap-6 md:grid-cols-3 text-sm">
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs font-semibold">1</div>
+                            <div>
+                                <p class="font-semibold text-slate-900">Tell us what you have</p>
+                                <p class="text-slate-500 mt-1 text-xs md:text-sm">
+                                    Choose a category and add a short description of your item.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs font-semibold">2</div>
+                            <div>
+                                <p class="font-semibold text-slate-900">Pick a DAANI center</p>
+                                <p class="text-slate-500 mt-1 text-xs md:text-sm">
+                                    We match you to the nearest partner center in your city.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs font-semibold">3</div>
+                            <div>
+                                <p class="font-semibold text-slate-900">Drop or request pickup</p>
+                                <p class="text-slate-500 mt-1 text-xs md:text-sm">
+                                    Either schedule a home pickup or drop items at the center.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DONATION FORM -->
+    <section id="donate" class="px-4 md:px-6 py-16 bg-slate-50">
+        <h3 class="text-3xl font-semibold text-center mb-2 text-slate-900">Donate Items</h3>
+        <p class="text-center text-slate-500 mb-8 text-sm">Share what you have, choose how we collect, and we’ll handle the rest.</p>
+
+        <div class="max-w-4xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-lg shadow-emerald-100/50 border border-slate-100 space-y-6">
+            <p class="text-xs font-semibold tracking-wide text-slate-500 uppercase">Item details</p>
+
+            <form id="donationForm" class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Category</label>
+                    <select class="w-full p-3 bg-white rounded-xl border border-slate-200" required>
+                        <option>Clothes</option><option>Books</option><option>Food</option><option>Electronics</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Item Description</label>
+                    <input class="w-full p-3 bg-white rounded-xl border border-slate-200" required />
+                </div>
+
+                <hr class="md:col-span-2 border-dashed border-slate-200">
+
+                <p class="md:col-span-2 text-xs font-semibold tracking-wide text-slate-500 uppercase">Location &amp; method</p>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Your City</label>
+                    <select id="citySelect" class="w-full p-3 bg-white rounded-xl border border-slate-200" required>
+                        <option value="">Select</option>
+                        <option value="Nagpur">Nagpur</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Pune">Pune</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nearest DAANI Center</label>
+                    <input id="centerOutput" class="w-full p-3 bg-slate-100 rounded-xl border border-slate-200" readonly />
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium mb-1">Donation Method</label>
+                    <select id="methodSelect" class="w-full p-3 bg-white rounded-xl border border-slate-200">
+                        <option value="drop">Drop at Center</option>
+                        <option value="pickup">Collect from Home</option>
+                    </select>
+                </div>
+
+                <div id="addressBox" class="md:col-span-2 hidden">
+                    <label class="block text-sm font-medium mb-1">Pickup Location</label>
+                    <div class="flex gap-2 mb-2">
+                        <input id="searchInput" placeholder="Search location" class="flex-1 p-3 bg-white rounded-xl border border-slate-200" />
+                        <button type="button" id="locBtn" class="px-4 bg-sky-500 hover:bg-sky-600 text-white rounded-xl">📍</button>
+                    </div>
+                    <div id="pickupMap" class="h-[320px] rounded-xl border border-slate-200 overflow-hidden"></div>
+                    <input id="addressInput" class="mt-2 w-full p-3 bg-slate-100 rounded-xl border border-slate-200" readonly />
+                </div>
+
+                <div class="md:col-span-2">
+                    <button class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-semibold">Submit Donation</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- CENTERS MAP -->
+    <section id="centers" class="px-4 md:px-6 py-16 bg-white">
+        <h3 class="text-3xl font-semibold text-center mb-2 text-slate-900">DAANI Centers</h3>
+        <p class="text-center text-slate-500 mb-8 text-sm">Drop-off locations you can trust, mapped for your city.</p>
+        <div class="max-w-6xl mx-auto bg-slate-50 rounded-2xl border border-slate-200 shadow-sm p-4">
+            <div id="map" class="h-[450px] rounded-xl overflow-hidden bg-white"></div>
+        </div>
+    </section>
+
+    <!-- DONATION TRACKER -->
+    <section id="track" class="px-4 md:px-6 py-16 bg-emerald-50/70">
+        <h3 class="text-3xl font-semibold text-center mb-2 text-slate-900">Donation Tracking</h3>
+        <p class="text-center text-slate-600 mb-8 text-sm">See exactly where your most recent donation is in the journey.</p>
+        <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-md border border-emerald-100">
+            <div class="flex items-center justify-between">
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 rounded-full bg-emerald-500"></div>
+                    <span class="mt-2 text-sm text-slate-700">Submitted</span>
+                </div>
+                <div class="flex-1 h-1 bg-emerald-500 mx-2"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 rounded-full bg-yellow-400"></div>
+                    <span class="mt-2 text-sm text-slate-700">Collected</span>
+                </div>
+                <div class="flex-1 h-1 bg-slate-300 mx-2"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 rounded-full bg-slate-300"></div>
+                    <span class="mt-2 text-sm text-slate-700">On the Way</span>
+                </div>
+                <div class="flex-1 h-1 bg-slate-300 mx-2"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 rounded-full bg-slate-300"></div>
+                    <span class="mt-2 text-sm text-slate-700">Delivered</span>
+                </div>
+            </div>
+            <p class="mt-8 text-center text-slate-600">
+                Current status: <span class="text-yellow-500 font-semibold">Awaiting Pickup</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="profile" class="px-4 md:px-6 py-16 bg-slate-50">
+        <h3 class="text-3xl font-semibold text-center mb-2 text-slate-900">My Donations</h3>
+        <p class="text-center text-slate-500 mb-8 text-sm">A quick history of everything you have given through DAANI.</p>
+        <div class="max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+            <table class="w-full text-left text-sm">
+                <thead class="text-slate-500 border-b border-slate-200">
+                <tr>
+                    <th class="py-2">Date</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Center</th>
+                    <th>Method</th>
+                </tr>
+                </thead>
+                <tbody id="donationHistory" class="text-slate-800"></tbody>
+            </table>
+            <p id="noDonations" class="text-center text-slate-400 mt-6">No donations yet.</p>
+        </div>
+    </section>
+
+</main>
+
+<!-- THANK YOU -->
+<div id="thankYouModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center">
+    <div class="bg-white p-10 rounded-2xl text-center shadow-xl">
+        <h3 class="text-2xl text-emerald-600 font-semibold">Thank You 💚</h3>
+        <p class="mt-4 text-slate-700">Donation recorded successfully.</p>
+        <button onclick="closeModal()" class="mt-6 px-6 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-semibold">Close</button>
+    </div>
+</div>
+
+<script>
+    /* ---------- AUTH (DEMO MODE) ---------- */
+    function loginUser() {
+        const name = document.getElementById('userName').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+
+        if (!name || !email) {
+            alert('Please enter name and email');
+            return;
+        }
+
+        const user = { name, email };
+        localStorage.setItem('daani_user', JSON.stringify(user));
+
+        const modal = document.getElementById('authModal');
+        modal.classList.add('hidden');
+
+        renderProfileUser();
+    }
+
+    function renderProfileUser() {
+        const user = JSON.parse(localStorage.getItem('daani_user'));
+        if (!user) return;
+        const span = document.getElementById('navUser');
+        if (span) span.innerText = `Hi, ${user.name}`;
+    }
+
+    window.onload = () => {
+        const user = localStorage.getItem('daani_user');
+        const modal = document.getElementById('authModal');
+        if (user) {
+            modal.classList.add('hidden');
+            renderProfileUser();
+        } else {
+            modal.classList.remove('hidden');
+        }
+    };
+
+    /* ---------- DATA ---------- */
+    const centers = {
+        Nagpur: { lat: 21.1458, lng: 79.0882, name: 'DAANI Nagpur Center' },
+        Mumbai: { lat: 19.076, lng: 72.8777, name: 'DAANI Mumbai Center' },
+        Delhi: { lat: 28.6139, lng: 77.209, name: 'DAANI Delhi Center' },
+        Pune: { lat: 18.5204, lng: 73.8567, name: 'DAANI Pune Center' }
+    };
+
+    /* ---------- FORM LOGIC ---------- */
+    const citySelect = document.getElementById('citySelect');
+    const centerOutput = document.getElementById('centerOutput');
+    const methodSelect = document.getElementById('methodSelect');
+    const addressBox = document.getElementById('addressBox');
+    const donationForm = document.getElementById('donationForm');
+    const donationHistory = document.getElementById('donationHistory');
+    const noDonations = document.getElementById('noDonations');
+    const thankYouModal = document.getElementById('thankYouModal');
+    const searchInput = document.getElementById('searchInput');
+    const locBtn = document.getElementById('locBtn');
+    const addressInput = document.getElementById('addressInput');
+
+    function updateCenter() {
+        const city = citySelect.value;
+        centerOutput.value = city ? centers[city].name : '';
+    }
+
+    function toggleAddress() {
+        addressBox.classList.toggle('hidden', methodSelect.value !== 'pickup');
+    }
+
+    citySelect.onchange = updateCenter;
+    methodSelect.onchange = toggleAddress;
+
+    /* ---------- MAPS ---------- */
+    const centerMap = L.map('map').setView([22.5, 78.9], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(centerMap);
+    Object.values(centers).forEach(c => L.marker([c.lat, c.lng]).addTo(centerMap));
+
+    let pickupMap, pickupMarker;
+
+    methodSelect.addEventListener('change', () => {
+        if (methodSelect.value === 'pickup' && !pickupMap) initPickupMap();
+    });
+
+    function initPickupMap() {
+        pickupMap = L.map('pickupMap').setView([20.5937, 78.9629], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(pickupMap);
+
+        pickupMap.on('click', e => setPickup(e.latlng.lat, e.latlng.lng));
+
+        locBtn.onclick = () => navigator.geolocation.getCurrentPosition(pos => {
+            setPickup(pos.coords.latitude, pos.coords.longitude);
+            pickupMap.setView([pos.coords.latitude, pos.coords.longitude], 16);
+        });
+
+        searchInput.addEventListener('keydown', async e => {
+            if (e.key !== 'Enter') return;
+            e.preventDefault();
+
+            const query = searchInput.value.trim();
+            if (!query) return;
+
+            try {
+                const res = await fetch(
+                    `http://127.0.0.1:5000/geocode?address=${encodeURIComponent(query)}`
+                );
+                const data = await res.json();
+                if (!res.ok) {
+                    alert(data.error || 'Geocoding failed');
+                    return;
+                }
+
+                const lat = parseFloat(data.lat);
+                const lon = parseFloat(data.lon);
+                setPickup(lat, lon);
+                pickupMap.setView([lat, lon], 16);
+                addressInput.value = data.display_name;
+            } catch (err) {
+                console.error("Geocode error:", err);
+                alert('Error contacting geocoding server');
+            }
+        });
+    }
+
+    function setPickup(lat, lng) {
+        if (pickupMarker) pickupMap.removeLayer(pickupMarker);
+        pickupMarker = L.marker([lat, lng]).addTo(pickupMap);
+        if (!addressInput.value) {
+            addressInput.value = `Lat ${lat.toFixed(5)}, Lng ${lng.toFixed(5)}`;
+        }
+    }
+
+    /* ---------- SUBMIT ---------- */
+    donationForm.onsubmit = e => {
+        e.preventDefault();
+
+        const donation = {
+            date: new Date().toLocaleString(),
+            category: donationForm.querySelector('select').value,
+            description: donationForm.querySelector('input').value,
+            center: centerOutput.value,
+            method: methodSelect.value
+        };
+
+        const history = JSON.parse(localStorage.getItem('daani_donations') || '[]');
+        history.push(donation);
+        localStorage.setItem('daani_donations', JSON.stringify(history));
+
+        renderProfile();
+
+        thankYouModal.classList.remove('hidden');
+        donationForm.reset();
+        addressBox.classList.add('hidden');
+        addressInput.value = '';
+    };
+
+    function renderProfile() {
+        const history = JSON.parse(localStorage.getItem('daani_donations') || '[]');
+        donationHistory.innerHTML = '';
+        noDonations.style.display = history.length ? 'none' : 'block';
+
+        history.forEach(d => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+        <td class="py-2">${d.date}</td>
+        <td>${d.category}</td>
+        <td>${d.description}</td>
+        <td>${d.center}</td>
+        <td>${d.method === 'pickup' ? 'Home Pickup' : 'Drop'}</td>
+      `;
+            donationHistory.appendChild(row);
+        });
+    }
+
+    renderProfile();
+
+    function closeModal() {
+        thankYouModal.classList.add('hidden');
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAANI | Organisation Portal</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    html, body {
+      font-family: 'Poppins', sans-serif;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-50 text-slate-900">
+
+<!-- AUTH GUARD -->
+<script>
+  const user = JSON.parse(localStorage.getItem("daani_user"));
+  if (!user || user.role !== "organization") {
+    window.location.href = "login.html";
+  }
+</script>
+
+<!-- NAVBAR -->
+<header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur shadow-sm">
+  <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-3">
+    <h1 class="text-2xl font-bold text-emerald-600">DAANI</h1>
+    <span class="text-sm text-slate-600">Organisation Portal</span>
+  </div>
+</header>
+
+<main class="pt-16">
+
+<!-- HERO (same space & style) -->
+<section class="relative flex items-center justify-center px-6 py-20 min-h-[320px]">
+  <div class="absolute inset-0">
+    <img src="C:\Users\jatin\Desktop\DAANI\WhatsApp Image 2026-01-05 at 8.56.46 PM.jpeg"
+         class="w-full h-full object-cover object-center" />
+    <div class="absolute inset-0 bg-black/55"></div>
+  </div>
+  <div class="relative z-10 text-center text-white max-w-2xl">
+    <h2 class="text-4xl md:text-5xl font-extrabold">
+      Partner With DAANI
+    </h2>
+    <p class="mt-4 text-slate-200">
+      Register your organisation and tell us what you need.
+    </p>
+  </div>
+</section>
+
+<!-- STATS (same numbers & layout) -->
+<section class="bg-slate-50 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-x">
+  <div class="px-6 py-5 text-center">
+    <p class="text-3xl font-extrabold">1,250+</p>
+    <p class="text-sm text-slate-500 uppercase">Active donors</p>
+  </div>
+  <div class="px-6 py-5 text-center">
+    <p class="text-3xl font-extrabold">8,400</p>
+    <p class="text-sm text-slate-500 uppercase">Items reused</p>
+  </div>
+  <div class="px-6 py-5 text-center">
+    <p class="text-3xl font-extrabold">4</p>
+    <p class="text-sm text-slate-500 uppercase">Cities covered</p>
+  </div>
+</section>
+
+<!-- ORGANISATION FORM -->
+<section class="px-6 py-16 bg-slate-50">
+  <h3 class="text-3xl font-semibold text-center mb-2">Organisation Details & Needs</h3>
+  <p class="text-center text-slate-500 mb-8 text-sm">
+    Help us understand your organisation and required goods.
+  </p>
+
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow border space-y-6">
+
+    <form id="orgForm" class="grid md:grid-cols-2 gap-6">
+
+      <!-- Organisation Name -->
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium mb-1">Organisation Name</label>
+        <input class="w-full p-3 border rounded-xl" required />
+      </div>
+
+      <!-- Organisation Type -->
+     <div class="md:col-span-2">
+  <label class="block text-sm font-medium mb-1">Type of Organisation</label>
+  <select class="w-full p-3 border rounded-xl">
+    <option value="">Select type</option>
+    <option>Orphanage</option>
+    <option>Old Age Home</option>
+    <option>NGO</option>
+    <option>Shelter Home</option>
+  </select>
+</div>
+
+
+      <!-- Goods Required -->
+   <div class="md:col-span-2">
+  <label class="block text-sm font-medium mb-1">Goods Required</label>
+  <div class="grid md:grid-cols-2 gap-4">
+    <select class="w-full p-3 border rounded-xl">
+      <option value="">Select category</option>
+      <option>Clothes</option>
+      <option>Books</option>
+      <option>Food</option>
+      <option>Electronics</option>
+    </select>
+
+    <textarea
+      placeholder="Item Description"
+      class="p-3 border rounded-xl w-full"
+    ></textarea>
+  </div>
+</div>
+
+
+      <!-- Location -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Your City</label>
+        <select class="w-full p-3 border rounded-xl">
+          <option>Nagpur</option>
+          <option>Mumbai</option>
+          <option>Delhi</option>
+          <option>Pune</option>
+        </select>
+      </div>
+	<!-- Address -->
+<div>
+  <label class="block text-sm font-medium mb-1">Address</label>
+  <textarea
+    placeholder="Enter complete address"
+    class="w-full p-3 border rounded-xl"
+    rows="3"
+  ></textarea>
+</div>
+
+
+
+      <!-- Method -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Donation Method</label>
+        <select class="w-full p-3 border rounded-xl">
+          <option>Drop at Centre</option>
+          <option>Collect from Home Facility</option>
+        </select>
+      </div>
+
+      <div class="md:col-span-2">
+        <button class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-semibold">
+          Submit
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+
+
+<!-- SUCCESS MESSAGE -->
+<section class="px-6 py-16 bg-emerald-50">
+  <p class="text-center text-emerald-700 text-lg font-semibold">
+    Your organisation has been successfully registered 
+  </p>
+</section>
+
+</main>
+
+<script>
+  const map = L.map('map').setView([22.5, 78.9], 5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+</script>
+
+</body>
+</html>
